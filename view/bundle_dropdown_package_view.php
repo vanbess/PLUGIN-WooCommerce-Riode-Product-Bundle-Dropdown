@@ -2,49 +2,38 @@
 
 global $woocommerce;
 
-$cart_items = $woocommerce->cart->get_cart();
-$currency = get_woocommerce_currency_symbol();
-// BD::$bd_products_variations = array();
-// BD::$bd_products_variations_prices = array();
-$package_product_ids = self::$package_product_ids;
+$cart_items            = $woocommerce->cart->get_cart();
+$currency              = get_woocommerce_currency_symbol();
+$package_product_ids   = self::$package_product_ids;
 $package_number_item_2 = self::$package_number_item_2;
 
-if (!empty($package_product_ids)) {
-
-?>
+if (!empty($package_product_ids)) { ?>
 
     <div class="bd_items_div bd_package_items_div i_clearfix" id="bd_checkout">
+
+        <h3><?php _e('Special Offer', 'woocommerce'); ?></h3>
+
         <input type="hidden" id="shortcode_type" value="package_order">
 
-        <?php
-        if (empty($cart_items)) {
-        ?>
+        <?php if (empty($cart_items)) { ?>
             <input type="hidden" id="bd_package_is_empty" value="1">
-        <?php
-        }
+        <?php }
 
         $product_count = count($package_product_ids);
 
-        if ($product_count == 1) {
-        ?>
+        if ($product_count == 1) { ?>
             <div style="display:none">
 
-            <?php
-        }
-            ?>
+            <?php } ?>
 
             <div class="step-container">
                 <h2 style="text-align: center;"><?php echo (__("Packages")) ?></h2>
 
                 <?php
-                //addon_products start
                 $addon_products = self::$package_addon_product_ids;
                 $addon_products = explode(',', $addon_products);
-                //addon_products end
-
                 $total_products = count($cart_items);
-
-                $p_i = 0;
+                $p_i            = 0;
 
                 ?>
 
@@ -87,25 +76,25 @@ if (!empty($package_product_ids)) {
                             </div>
                         <?php
                         } else {
-                            $product_separate = 1;
-                            $product_title = $product->get_title();
-                            $product_price_html = $product->get_price_html();
-                            $product_price = $product->get_price();
+                            $product_separate      = 1;
+                            $product_title         = $product->get_title();
+                            $product_price_html    = $product->get_price_html();
+                            $product_price         = $product->get_price();
                             $product_regular_price = intval($product->get_regular_price());
-                            $product_sale_price = intval($product->get_sale_price());
+                            $product_sale_price    = intval($product->get_sale_price());
 
                             //calculation prices
                             if ($prod['type'] == 'free') {
                                 $i_price = ($product_price * $prod['qty']) / ($prod['qty'] + $prod['qty_free']);
                                 $i_price_total = $i_price * ($prod['qty'] + $prod['qty_free']);
-                                $i_cupon = ((($product_price * ($prod['qty'] + $prod['qty_free'])) - $i_price_total) / $i_price_total) * 100;
+                                $i_coupon = ((($product_price * ($prod['qty'] + $prod['qty_free'])) - $i_price_total) / $i_price_total) * 100;
                             } else if ($prod['type'] == 'off') {
                                 $i_tt = $product_price * $prod['qty'];
-                                $i_cupon = $prod['cupon'];
-                                $i_price = ($i_tt - ($i_tt * $i_cupon / 100)) / $prod['qty'];
+                                $i_coupon = $prod['coupon'];
+                                $i_price = ($i_tt - ($i_tt * $i_coupon / 100)) / $prod['qty'];
                                 $i_price_total = $i_price * $prod['qty'];
                             } else {
-                                $i_cupon = $prod['cupon'];
+                                $i_coupon = $prod['coupon'];
                                 $i_price = $prod['price'];
                                 $i_price_total = $prod['price'];
                             }
@@ -158,9 +147,9 @@ if (!empty($package_product_ids)) {
                                                     if ($p_i == 0 && isset($_GET['unit'])) {
                                                         $unit_price = (strlen($_GET['unit']) > 2) ? number_format(($_GET['unit'] / 100), 2) : $_GET['unit'];
                                                         $atts = array(
-                                                            'price' => $unit_price,
+                                                            'price'         => $unit_price,
                                                             'currency_from' => "USD",
-                                                            'currency' => alg_get_current_currency_code(),
+                                                            'currency'      => alg_get_current_currency_code(),
                                                         );
                                                     ?>
 

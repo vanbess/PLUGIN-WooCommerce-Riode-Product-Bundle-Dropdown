@@ -1,0 +1,40 @@
+Array
+(
+    [selValue] => free
+    [title_package] => <p>Buy 3 + Get 1 FREE</p>
+    [image_package_desktop] => 
+    [image_package_mobile] => 
+    [product_name] => 
+    [selValue_free] => Array
+        (
+            [post] => Array
+                (
+                    [id] => 2468
+                    [title] => Pillowcase - Champagne
+                )
+
+            [quantity] => 3
+        )
+
+    [selValue_free_prod] => Array
+        (
+            [post] => Array
+                (
+                    [id] => 2468
+                    [title] => Pillowcase - Champagne
+                )
+
+            [quantity] => 1
+        )
+
+    [feature_description] => 
+    [show_discount_label] => 
+    [sell_out_risk] => 
+    [popularity] => 
+    [free_shipping] => 
+    [label_item] => 
+    [custom_price] => Array
+        (
+        )
+
+)

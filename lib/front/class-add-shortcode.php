@@ -412,7 +412,7 @@ if (!class_exists('BDShortCode')) {
                         $prod_ids[$key]['title_package'] = isset($discount_data['title_package']) ? $discount_data['title_package'] : "";
                         $prod_ids[$key]['id']            = str_replace(' ', '', $discount_data['selValue_off']['post']['id']);
                         $prod_ids[$key]['qty']           = $discount_data['selValue_off']['quantity'];
-                        $prod_ids[$key]['cupon']         = $discount_data['selValue_off']['cupon'];
+                        $prod_ids[$key]['coupon']         = $discount_data['selValue_off']['coupon'];
                         $prod_ids[$key]['custom_price']  = isset($discount_data['custom_price']) ? $discount_data['custom_price'] : '';
                     endif;
 

@@ -60,7 +60,7 @@ if (!empty($package_product_ids)) { ?>
 					$i_price        = ($product_price * (int)$prod['qty']) / $i_total_qty;
 					$i_price_total  = $i_price * $i_total_qty;
 					$price_discount = ($product_price * $i_total_qty) - $i_price_total;
-					$i_cupon        = ((int)$prod['qty_free'] * 100) / $i_total_qty;
+					$i_coupon        = ((int)$prod['qty_free'] * 100) / $i_total_qty;
 
 					// js input data package
 					$js_discount_type  = 'free';
@@ -76,20 +76,20 @@ if (!empty($package_product_ids)) { ?>
 					$p_id = (int)$prod['id'];
 
 					// bundle title
-					$i_title = sprintf(__('Buy %s + Get %d&#37;', 'bd'), (int)$prod['qty'], (float)$prod['cupon']) . ' ' . __('Off', 'bd');
+					$i_title = sprintf(__('Buy %s + Get %d&#37;', 'bd'), (int)$prod['qty'], (float)$prod['coupon']) . ' ' . __('Off', 'bd');
 
 					// pricing
 					$i_total_qty    = (int)$prod['qty'];
 					$i_tt           = $product_price * $prod['qty'];
-					$i_cupon        = (float)$prod['cupon'];
-					$i_price        = ((float)$product_price - ((float)$product_price * (float)$i_cupon / 100));
+					$i_coupon        = (float)$prod['coupon'];
+					$i_price        = ((float)$product_price - ((float)$product_price * (float)$i_coupon / 100));
 					$i_price_total  = $i_price * (int)$prod['qty'];
 					$price_discount = $i_tt - $i_price_total;
 
 					// js input data package
 					$js_discount_type  = 'percentage';
 					$js_discount_qty   = 1;
-					$js_discount_value = (float)$prod['cupon'];
+					$js_discount_value = (float)$prod['coupon'];
 
 				endif;
 
@@ -133,7 +133,7 @@ if (!empty($package_product_ids)) { ?>
 					}
 
 					// discount percent
-					$i_cupon = (float)$prod['discount_percentage'];
+					$i_coupon = (float)$prod['discount_percentage'];
 
 					// get price total bundle
 					if ($i_price) {
@@ -145,7 +145,7 @@ if (!empty($package_product_ids)) { ?>
 
 					// apply discount percentage
 					if ($prod['discount_percentage'] > 0) {
-						$subtotal_bundle -= ($subtotal_bundle * $i_cupon / 100);
+						$subtotal_bundle -= ($subtotal_bundle * $i_coupon / 100);
 					}
 
 					$price_discount = $sum_price_regular - $subtotal_bundle;
@@ -196,11 +196,11 @@ if (!empty($package_product_ids)) { ?>
 				// free and off product bundles
 				if ($prod['type'] == 'free' || $prod['type'] == 'off') { ?>
 
-					<li class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo ($p_id) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo ($prod['type']) ?>" data-bundle_id="<?php echo ($prod['bun_id']) ?>" data-cupon="<?= round((float)$i_cupon, 0) ?>">
+					<li class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo ($p_id) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo ($prod['type']) ?>" data-bundle_id="<?php echo ($prod['bun_id']) ?>" data-coupon="<?= round((float)$i_coupon, 0) ?>">
 					<?php
 				} else { ?>
 
-					<li class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo ($prod['bun_id']) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo ($prod['type']) ?>" data-bundle_id="<?php echo ($prod['bun_id']) ?>" data-cupon="<?= round((float)$i_cupon, 0) ?>">
+					<li class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo ($prod['bun_id']) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo ($prod['type']) ?>" data-bundle_id="<?php echo ($prod['bun_id']) ?>" data-coupon="<?= round((float)$i_coupon, 0) ?>">
 					<?php
 				} ?>
 
@@ -228,7 +228,7 @@ if (!empty($package_product_ids)) { ?>
 										<input type="checkbox" name="bd_selected_package_product" data-product_id="<?php echo ($prod['bun_id']) ?>" data-index="<?php echo ($opt_i) ?>" value="<?php echo ($prod['bun_id']) ?>" class="d-none bd_selected_package_product product_id">
 									<?php } ?>
 
-									<span class="show_discount_label"><?php echo (sprintf(__('%s&#37; OFF', 'bd'), round((float)$i_cupon, 0))) ?></span>
+									<span class="show_discount_label"><?php echo (sprintf(__('%s&#37; OFF', 'bd'), round((float)$i_coupon, 0))) ?></span>
 								</div>
 
 								<div class="bd_c_package_info text-right">

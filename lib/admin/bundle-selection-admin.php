@@ -177,13 +177,13 @@ if (!class_exists('BundleDropdownAdmin')) {
             $product = wc_get_product($product_id);
 
             // bail if product object not returned
-            if (!$product):
+            if (!$product) :
                 return false;
             endif;
 
             // get currencies
             $additional_currencies = $this->bd_getCurrency();
-            
+
             if (!empty($additional_currencies)) {
                 $default_curr = get_option('woocommerce_currency', true);
                 $additional_currencies = array_merge([$default_curr], $additional_currencies);
@@ -367,26 +367,27 @@ if (!class_exists('BundleDropdownAdmin')) {
                 /**
                  * edit option buy x get y free
                  */
-                $data = [];
-                $data['title']          = isset($db_data['title_package']) ? $db_data['title_package'] : '';
-                $data['image_desk']     = isset($db_data['image_package_desktop']) ? $db_data['image_package_desktop'] : '';
-                $data['image_mobile']   = isset($db_data['image_package_mobile']) ? $db_data['image_package_mobile'] : '';
-                $data['description']    = isset($db_data['feature_description']) ? $db_data['feature_description'] : '';
-                $data['label']          = isset($db_data['label_item']) ? $db_data['label_item'] : '';
+                $data                  = [];
+
+                $data['title']               = isset($db_data['title_package']) ? $db_data['title_package'] : '';
+                $data['image_desk']          = isset($db_data['image_package_desktop']) ? $db_data['image_package_desktop'] : '';
+                $data['image_mobile']        = isset($db_data['image_package_mobile']) ? $db_data['image_package_mobile'] : '';
+                $data['description']         = isset($db_data['feature_description']) ? $db_data['feature_description'] : '';
+                $data['label']               = isset($db_data['label_item']) ? $db_data['label_item'] : '';
                 $data['discount_percentage'] = isset($db_data['discount_percentage']) ? $db_data['discount_percentage'] : '';
-                $data['sell_out_risk']  = isset($db_data['sell_out_risk']) ? $db_data['sell_out_risk'] : '';
-                $data['popularity']     = isset($db_data['popularity']) ? $db_data['popularity'] : '';
-                $data['free_shipping']  = isset($db_data['free_shipping']) ? $db_data['free_shipping'] : false;
+                $data['sell_out_risk']       = isset($db_data['sell_out_risk']) ? $db_data['sell_out_risk'] : '';
+                $data['popularity']          = isset($db_data['popularity']) ? $db_data['popularity'] : '';
+                $data['free_shipping']       = isset($db_data['free_shipping']) ? $db_data['free_shipping'] : false;
 
                 // // buy x get x free
                 if ($selValue == 'free') {
-                    $data['product_name']   = isset($db_data['product_name']) ? $db_data['product_name'] : '';
-                    $data['free']           = isset($db_data['selValue_free']['post']) ? $db_data['selValue_free']['post'] : ['id' => '', 'text' => 'title'];
-                    $data['free_qty']       = isset($db_data['selValue_free']['quantity']) ? $db_data['selValue_free']['quantity'] : '';
-                    $data['free_prod']      = isset($db_data['selValue_free_prod']['post']) ? $db_data['selValue_free_prod']['post'] : ['id' => '', 'text' => 'title'];
-                    $data['free_prod_qty']  = isset($db_data['selValue_free_prod']['quantity']) ? $db_data['selValue_free_prod']['quantity'] : '';
-                    $data['custom_price']   = isset($db_data['custom_price']) ? $db_data['custom_price'] : '';
-                    $data['free_show_discount_label']   = isset($db_data['show_discount_label']) ? $db_data['show_discount_label'] : false;
+                    $data['product_name']             = isset($db_data['product_name']) ? $db_data['product_name'] : '';
+                    $data['free']                     = isset($db_data['selValue_free']['post']) ? $db_data['selValue_free']['post'] : ['id' => '', 'text' => 'title'];
+                    $data['free_qty']                 = isset($db_data['selValue_free']['quantity']) ? $db_data['selValue_free']['quantity'] : '';
+                    $data['free_prod']                = isset($db_data['selValue_free_prod']['post']) ? $db_data['selValue_free_prod']['post'] : ['id' => '', 'text' => 'title'];
+                    $data['free_prod_qty']            = isset($db_data['selValue_free_prod']['quantity']) ? $db_data['selValue_free_prod']['quantity'] : '';
+                    $data['custom_price']             = isset($db_data['custom_price']) ? $db_data['custom_price'] : '';
+                    $data['free_show_discount_label'] = isset($db_data['show_discount_label']) ? $db_data['show_discount_label'] : false;
 
                     // option buy x get x free *** main option
                     echo $this->renderBuyXgetXFree($data, true);
@@ -402,12 +403,12 @@ if (!class_exists('BundleDropdownAdmin')) {
                 // ** edit option buy x get y%
                 // */
                 if ($selValue == 'off') {
-                    $data['product_name']   = isset($db_data['product_name']) ? $db_data['product_name'] : '';
-                    $data['off']            = isset($db_data['selValue_off']['post']) ? $db_data['selValue_off']['post'] : ['id' => '', 'text' => 'title'];
-                    $data['off_qty']        = isset($db_data['selValue_off']['quantity']) ? $db_data['selValue_off']['quantity'] : '';
-                    $data['off_cupon']      = isset($db_data['selValue_off']['cupon']) ? $db_data['selValue_off']['cupon'] : '';
-                    $data['custom_price']   = isset($db_data['custom_price']) ? $db_data['custom_price'] : '';
-                    $data['off_show_discount_label']   = isset($db_data['show_discount_label']) ? $db_data['show_discount_label'] : false;
+                    $data['product_name']            = isset($db_data['product_name']) ? $db_data['product_name'] : '';
+                    $data['off']                     = isset($db_data['selValue_off']['post']) ? $db_data['selValue_off']['post'] : ['id' => '', 'text' => 'title'];
+                    $data['off_qty']                 = isset($db_data['selValue_off']['quantity']) ? $db_data['selValue_off']['quantity'] : '';
+                    $data['off_coupon']               = isset($db_data['selValue_off']['coupon']) ? $db_data['selValue_off']['coupon'] : '';
+                    $data['custom_price']            = isset($db_data['custom_price']) ? $db_data['custom_price'] : '';
+                    $data['off_show_discount_label'] = isset($db_data['show_discount_label']) ? $db_data['show_discount_label'] : false;
 
                     // option buy x get x free
                     echo $this->renderBuyXgetXFree();
@@ -474,24 +475,24 @@ if (!class_exists('BundleDropdownAdmin')) {
 
             // save option buy x get x free
             if ($_POST['selValue'] == 'free') {
-                $data_arr['selValue'] = $_POST['selValue'];
-                $data_arr['title_package'] = $_POST['title_package_free'];
+
+                $data_arr['selValue']              = $_POST['selValue'];
+                $data_arr['title_package']         = $_POST['title_package_free'];
                 $data_arr['image_package_desktop'] = $_POST['free_image_desk'];
-                $data_arr['image_package_mobile'] = $_POST['free_image_mobile'];
-                $data_arr['product_name'] = $_POST['free_product_name'];
+                $data_arr['image_package_mobile']  = $_POST['free_image_mobile'];
+                $data_arr['product_name']          = $_POST['free_product_name'];
+
                 $value = explode('/%%/', $_POST['selValue_free']);
+
                 if (isset($value[0]) && isset($value[1])) {
                     $_POST['selValue_free'] = ['id' => $value[0], 'title' => preg_replace('/[^a-zA-Z0-9_ -]/s', '', $value[1])];
                 }
                 $data_arr['selValue_free'] = ['post' => $_POST['selValue_free'], 'quantity' => $_POST['quantity_main_free']];
-                // $value = explode('/%%/', $_POST['selValue_free_prod']);
-                // if (isset($value[0]) && isset($value[1])) {
-                //     $_POST['selValue_free_prod'] = ['id' => $value[0], 'title' => $value[1]];
-                // }
+
                 $data_arr['selValue_free_prod'] = ['post' => $_POST['selValue_free'], 'quantity' => $_POST['quantity_free_free']];
 
                 //get feature desc _POST
-                $desc = array_filter($_POST['feature_free_desc']);
+                $desc = isset($_POST['feature_free_desc']) ? array_filter($_POST['feature_free_desc']) : '';
                 $data_arr['feature_description'] = $desc;
 
                 // show discout label
@@ -505,16 +506,6 @@ if (!class_exists('BundleDropdownAdmin')) {
 
                 // free shipping
                 $data_arr['free_shipping'] = ($_POST['free_shipping'] == true) ?: false;
-
-                // get label items _POST
-                $label_name = array_filter($_POST['name_label_free']);
-                $label_color = array_filter($_POST['color_label_free']);
-                $data_arr['label_item'] = array_map(function ($name, $color) {
-                    return array(
-                        'name' => $name,
-                        'color' => $color
-                    );
-                }, $label_name, $label_color);
 
                 // custom product price
                 $custom_price = [];
@@ -531,30 +522,21 @@ if (!class_exists('BundleDropdownAdmin')) {
             }
             // save option buy x get x%
             elseif ($_POST['selValue'] == 'off') {
-                $data_arr['selValue'] = $_POST['selValue'];
-                $data_arr['title_package'] = $_POST['title_package_off'];
+
+                $data_arr['selValue']              = $_POST['selValue'];
+                $data_arr['title_package']         = $_POST['title_package_off'];
                 $data_arr['image_package_desktop'] = $_POST['off_image_desk'];
-                $data_arr['image_package_mobile'] = $_POST['off_image_mobile'];
-                $data_arr['product_name'] = $_POST['off_product_name'];
+                $data_arr['image_package_mobile']  = $_POST['off_image_mobile'];
+                $data_arr['product_name']          = $_POST['off_product_name'];
+
                 $value = explode('/%%/', $_POST['selValue_off']);
+
                 if (isset($value[0]) && isset($value[1])) {
                     $_POST['selValue_off'] = ['id' => $value[0], 'title' => preg_replace('/[^a-zA-Z0-9_ -]/s', '', $value[1])];
                 }
-                $data_arr['selValue_off'] = ['post' => $_POST['selValue_off'], 'quantity' => $_POST['quantity_main_off'], 'cupon' => $_POST['quantity_cupon_off']];
+                $data_arr['selValue_off'] = ['post' => $_POST['selValue_off'], 'quantity' => $_POST['quantity_main_off'], 'coupon' => $_POST['quantity_coupon_off']];
                 $desc = isset($_POST['feature_off_desc']) ? array_filter($_POST['feature_off_desc']) : '';
                 $data_arr['feature_description'] = $desc;
-
-                // // show discout label
-                // $data_arr['show_discount_label'] = ($_POST['off_show_discount_label'] == true) ?: false;
-
-                // // sell out risk
-                // $data_arr['sell_out_risk'] = $_POST['off_sell_out_risk'] ?: '';
-
-                // // popularity
-                // $data_arr['popularity'] = $_POST['off_popularity'] ?: '';
-
-                // // free shipping
-                // $data_arr['free_shipping'] = ($_POST['free_shipping'] == true) ?: false;
 
                 // custom product price
                 $custom_price = [];
@@ -572,11 +554,11 @@ if (!class_exists('BundleDropdownAdmin')) {
             // save option buy bundle products
             elseif ($_POST['selValue'] == 'bun') {
 
-                $data_arr['selValue'] = 'bun';
-                $data_arr['title_header'] = $_POST['title_bundle_header'];
-                $data_arr['title_package_bundle'] = $_POST['title_package_bundle'];
+                $data_arr['selValue']              = 'bun';
+                $data_arr['title_header']          = $_POST['title_bundle_header'];
+                $data_arr['title_package_bundle']  = $_POST['title_package_bundle'];
                 $data_arr['image_package_desktop'] = $_POST['bundle_image_desk'];
-                $data_arr['image_package_mobile'] = $_POST['bundle_image_mobile'];
+                $data_arr['image_package_mobile']  = $_POST['bundle_image_mobile'];
 
                 // $total_price = 0;
                 foreach ($_POST['selValue_bundle'] as $key => $value) {
@@ -588,7 +570,7 @@ if (!class_exists('BundleDropdownAdmin')) {
                     $_POST['selValue_bundle'][$key] = $new_arr;
                 }
 
-                // $data_arr['selValue_bun'] = ['post' => $_POST['selValue_bundle'], 'price' => $_POST['bundle_price'], 'cupon' => round($cupon_discount, 2), 'default_currency' => get_woocommerce_currency()];
+                // $data_arr['selValue_bun'] = ['post' => $_POST['selValue_bundle'], 'price' => $_POST['bundle_price'], 'coupon' => round($coupon_discount, 2), 'default_currency' => get_woocommerce_currency()];
                 $data_arr['selValue_bun'] = ['post' => $_POST['selValue_bundle'], 'price_currency' => $_POST['bun_price_currency']];
                 $desc = array_filter($_POST['feature_bundle_desc']);
                 $data_arr['feature_description'] = $desc;
@@ -784,10 +766,10 @@ if (!class_exists('BundleDropdownAdmin')) {
 
                         <tr valign="top">
                             <th scope="row" class="titledesc">
-                                <label>Cupon</label>
+                                <label>Coupon</label>
                             </th>
                             <td class="forminp forminp-text">
-                                <input name='quantity_cupon_off' type='number' value="<?= $data['off_cupon'] ?>">
+                                <input name='quantity_coupon_off' type='number' value="<?= $data['off_coupon'] ?>">
                             </td>
                         </tr>
 

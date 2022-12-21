@@ -143,7 +143,7 @@ jQuery(document).ready(function ($) {
         $('#bd_bundle_dropdown_meta .product.product_'+type+' input').removeAttr("disabled");
         if(type == 'bun'){
                 $('.product_add_bun').addClass('activetype_button');
-                $('.product_bun_cupon').addClass('activetype_button');
+                $('.product_bun_coupon').addClass('activetype_button');
         }
     });
     $('.product_add_bun').on('click',function() {

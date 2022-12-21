@@ -38,36 +38,36 @@ if (!empty($package_product_ids)) {
 			 */
 
 			// type free
-			if($prod['type'] == 'free'):
+			if ($prod['type'] == 'free') :
 
 				$p_id = (int)$prod['id'];
 
-				if((int)$prod['qty_free'] === 0):
+				if ((int)$prod['qty_free'] === 0) :
 					$i_title = sprintf(__('Buy %s', 'woocommerce', 'bd'), (int)$prod['qty']);
-				else:
+				else :
 					$i_title = sprintf(__('Buy %s + Get %d FREE', 'bd'), (int)$prod['qty'], (int)$prod['qty_free']);
 				endif;
-			
+
 			endif;
 
 			// type off
-			if($prod['type'] == 'off'):
+			if ($prod['type'] == 'off') :
 				$p_id = (int)$prod['id'];
-				$i_title = sprintf(__('Buy %s + Get %d&#37;', 'bd'), (int)$prod['qty'], (int)$prod['cupon']) . ' ' . __('Off', 'bd');
+				$i_title = sprintf(__('Buy %s + Get %d&#37;', 'bd'), (int)$prod['qty'], (int)$prod['coupon']) . ' ' . __('Off', 'bd');
 			endif;
 
 			// type bun
-			if($prod['type'] == 'off'):
+			if ($prod['type'] == 'bun') :
 				$p_id = (int)$prod['prod'][0]['id'];
 				$i_title = $prod['title_header'] ?: __('Bundle option', 'bd');
 			endif;
 
-			$product            = (int)wc_get_product($p_id);
+			// set up package name/title
+			$product            = wc_get_product($p_id);
 			$product_separate   = 1;
 			$product_title      = $prod['title_package'] ?: $product->get_title();
 			$product_name       = $prod['product_name'] ?: $product->get_title();
 			$product_price_html = $product->get_price_html();
-
 
 			if ($product->is_type('variable')) {
 				$product_price = (float)$product->get_variation_regular_price('min');
@@ -115,7 +115,7 @@ if (!empty($package_product_ids)) {
 				$i_price        = ((float)$product_price * (int)$prod['qty']) / $i_total_qty;
 				$i_price_total  = $i_price * $i_total_qty;
 				$price_discount = ((float)$product_price * $i_total_qty) - $i_price_total;
-				$i_cupon        = ((int)$prod['qty_free'] * 100) / $i_total_qty;
+				$i_coupon        = ((int)$prod['qty_free'] * 100) / $i_total_qty;
 
 				// js input data package
 				$js_discount_type  = 'free';
@@ -129,15 +129,15 @@ if (!empty($package_product_ids)) {
 
 				$i_total_qty    = (int)$prod['qty'];
 				$i_tt           = (float)$product_price * (int)$prod['qty'];
-				$i_cupon        = (float)$prod['cupon'];
-				$i_price        = ((float)$product_price - ((float)$product_price * $i_cupon / 100));
+				$i_coupon        = (float)$prod['coupon'];
+				$i_price        = ((float)$product_price - ((float)$product_price * $i_coupon / 100));
 				$i_price_total  = $i_price * (int)$prod['qty'];
 				$price_discount = $i_tt - $i_price_total;
 
 				// js input data package
 				$js_discount_type  = 'percentage';
 				$js_discount_qty   = 1;
-				$js_discount_value = (float)$prod['cupon'];
+				$js_discount_value = (float)$prod['coupon'];
 
 			endif;
 
@@ -169,7 +169,7 @@ if (!empty($package_product_ids)) {
 						$sum_price_regular += (float)$p_bun->get_variation_regular_price('min') * (int)$i_prod['qty'];
 						$total_price_bun   += (float)$p_bun->get_variation_sale_price('min') * (int)$i_prod['qty'];
 
-					// simple prod
+						// simple prod
 					} else {
 						$sum_price_regular += (float)$p_bun->get_regular_price() * (int)$i_prod['qty'];
 						$total_price_bun   += (float)$p_bun->get_sale_price() * (int)$i_prod['qty'];
@@ -178,7 +178,7 @@ if (!empty($package_product_ids)) {
 				endforeach;
 
 				// discount percent
-				$i_cupon = (float)$prod['discount_percentage'];
+				$i_coupon = (float)$prod['discount_percentage'];
 
 				// get price total bundle
 				if ($i_price) {
@@ -190,7 +190,7 @@ if (!empty($package_product_ids)) {
 
 				// apply discount percentage
 				if ((float)$prod['discount_percentage'] > 0) {
-					$subtotal_bundle -= ($subtotal_bundle * $i_cupon / 100);
+					$subtotal_bundle -= ($subtotal_bundle * $i_coupon / 100);
 				}
 
 				$price_discount = $sum_price_regular - $subtotal_bundle;
@@ -200,11 +200,11 @@ if (!empty($package_product_ids)) {
 
 			if ($prod['type'] == 'free' || $prod['type'] == 'off') { ?>
 
-				<div class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo ($p_id) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo ($prod['type']) ?>" data-bundle_id="<?php echo ($prod['bun_id']) ?>" data-cupon="<?= round($i_cupon, 0) ?>">
+				<div class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo ($p_id) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo ($prod['type']) ?>" data-bundle_id="<?php echo ($prod['bun_id']) ?>" data-coupon="<?= round($i_coupon, 0) ?>">
 				<?php
 			} else { ?>
 
-					<div class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo ($prod['bun_id']) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo ($prod['type']) ?>" data-bundle_id="<?php echo ($prod['bun_id']) ?>" data-cupon="<?= round($i_cupon, 0) ?>">
+					<div class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo ($prod['bun_id']) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo ($prod['type']) ?>" data-bundle_id="<?php echo ($prod['bun_id']) ?>" data-coupon="<?= round($i_coupon, 0) ?>">
 					<?php
 				} ?>
 					<!-- js input hidden data package -->
@@ -236,7 +236,7 @@ if (!empty($package_product_ids)) {
 
 									// show discout label
 									if ($prod['show_discount_label']) : ?>
-										<span class="show_discount_label"><?php echo (sprintf(__('%s&#37; OFF', 'bd'), round($i_cupon, 0))) ?></span>
+										<span class="show_discount_label"><?php echo (sprintf(__('%s&#37; OFF', 'bd'), round($i_coupon, 0))) ?></span>
 									<?php
 									endif;
 									?>
