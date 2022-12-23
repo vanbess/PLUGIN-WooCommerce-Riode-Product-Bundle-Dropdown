@@ -15,7 +15,6 @@ if (!trait_exists('Load_Resources')) :
             $req = array('jquery');
 
             wp_enqueue_style('bd_common_style', BD_PLUGIN_URL . 'resources/style/common.css', array(), BDVersion, 'all');
-            wp_enqueue_style('bd_style', BD_PLUGIN_URL . 'resources/style/front_style.css', array(), BDVersion . time(), 'all');
 
             wp_enqueue_script('bd_front_script_js', BD_PLUGIN_URL . 'resources/js/front_js.js', $req, time(), true);
 

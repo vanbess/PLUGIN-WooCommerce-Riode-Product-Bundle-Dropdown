@@ -17,6 +17,10 @@ if (!trait_exists('Get_Price_Variations')) :
                 return;
             endif;
 
+            // print_r($_GET);
+
+            // wp_die();
+
             // setup default response
             $return = array(
                 'status' => false,
@@ -33,9 +37,12 @@ if (!trait_exists('Get_Price_Variations')) :
                 $total_price = 0;
 
                 foreach ($price_list as $key => $value) {
+
+                    // print_r($value);
                     $total_price += floatval($value['price']);
                 }
 
+                // wp_die();
                 // calc discounted price
                 $discounted_price = $total_price;
 

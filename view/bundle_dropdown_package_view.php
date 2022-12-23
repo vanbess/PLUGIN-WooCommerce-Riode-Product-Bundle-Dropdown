@@ -106,11 +106,11 @@ if (!empty($package_product_ids)) { ?>
                                 <?php
                                 if ($prod['type'] == 'free' || $prod['type'] == 'off') {
                                 ?>
-                                    <div class="col item-selection medium-12 small-12 large-4 col-hover-focus bd_item_div bd_item_div_<?php echo ($p_id . '_' . $opt_i) ?> bd_package_option <?php echo (($p_i == 0) ? ' firstpackage' : '') ?>" data-type="<?php echo ($prod['type']) ?>" data-bundle="<?php echo ($prod['bun_id']) ?>">
+                                    <div class="col item-selection medium-12 small-12 large-4 col-hover-focus bd_item_div bd_item_div_<?php echo trim($prod['bun_id']) ?> bd_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo trim($prod['type']) ?>" data-bundle="<?php echo trim($prod['bun_id']) ?>" data-coupon="<?= round((float)$i_coupon, 0) ?>">
                                     <?php
                                 } else {
                                     ?>
-                                        <div class="col item-selection medium-12 small-12 large-4 col-hover-focus bd_item_div bd_item_div_<?php echo ($prod['bun_id'] . '_' . $opt_i) ?> bd_package_option <?php echo (($p_i == 0) ? ' firstpackage' : '') ?>" data-type="'.$prod['type'].'" data-bundle="<?php echo ($prod['bun_id']) ?>">
+                                        <div class="col item-selection medium-12 small-12 large-4 col-hover-focus bd_item_div bd_item_div_<?php echo trim($prod['bun_id']) ?> bd_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo trim($prod['type']) ?>" data-bundle="<?php echo trim($prod['bun_id']) ?>" data-coupon="<?= round((float)$i_coupon, 0) ?>">
                                         <?php
                                     }
 

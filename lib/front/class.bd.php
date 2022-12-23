@@ -15,6 +15,8 @@ if (!class_exists('BD')) :
     require_once __DIR__ . '/traits/class.bd/trait-return-linked-prod-dd.php';
     require_once __DIR__ . '/traits/class.bd/trait-return-opc-var-dd.php';
     require_once __DIR__ . '/traits/class.bd/trait-return-wc-var-attrib-dd.php';
+    require_once __DIR__ . '/traits/class.bd/trait-apply-reg-price-cart.php';
+    require_once __DIR__ . '/traits/class.bd/trait-apply-reg-price-mini-cart.php';
 
     class BD {
 
@@ -28,7 +30,9 @@ if (!class_exists('BD')) :
             Load_Resources,
             Return_Linked_Product_Dropdown,
             Return_OPC_Variations_Dropdown,
-            Return_WC_Variation_Attrib_Dropdown;
+            Return_WC_Variation_Attrib_Dropdown,
+            Apply_Regular_Price_Cart,
+            Apply_Regular_Price_Mini_Cart;
 
         // Properties
         private static $initiated = false;
@@ -67,7 +71,16 @@ if (!class_exists('BD')) :
             add_action('wp_ajax_bd_get_price_package', array(__CLASS__, 'bd_get_price_package'));
             add_action('wp_ajax_nopriv_bd_get_price_package', array(__CLASS__, 'bd_get_price_package'));
 
+            // apply regular pricing to cart
+            add_action('woocommerce_before_calculate_totals', array(__CLASS__, 'apply_regular_price_cart'));
+
+            // apply regular pricing to mini cart
+            add_filter('woocommerce_cart_item_price', array(__CLASS__, 'apply_regular_price_mini_cart'), 30, 3);
+
+            // remove discount if cart qtys updated
             add_action('woocommerce_update_cart_action_cart_updated', array(__CLASS__, 'on_action_cart_updated'), 20, 1);
+
+            // calculate discount fees and apply to cart
             add_action('woocommerce_cart_calculate_fees', array(__CLASS__, 'add_calculate_bundle_fee'), PHP_INT_MAX);
 
             // action add referer to order note

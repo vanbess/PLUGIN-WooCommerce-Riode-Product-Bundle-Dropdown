@@ -85,12 +85,12 @@ if (!empty($package_product_ids)) {
 			if ($product->is_type('variable')) {
 				foreach ($product->get_available_variations() as $key => $value) {
 
-					$variation_price[$prod['bun_id']][$value['variation_id']]['variation_id'] = $value['variation_id'];
+					$variation_price[trim($prod['bun_id'])][$value['variation_id']]['variation_id'] = $value['variation_id'];
 
 					if ($prod['custom_price'] && isset($prod['custom_price'][$value['variation_id']][$current_curr])) {
-						$variation_price[$prod['bun_id']][$value['variation_id']]['price'] = $prod['custom_price'][$value['variation_id']][$current_curr];
+						$variation_price[trim($prod['bun_id'])][$value['variation_id']]['price'] = $prod['custom_price'][$value['variation_id']][$current_curr];
 					} else {
-						$variation_price[$prod['bun_id']][$value['variation_id']]['price'] = $value['display_regular_price'];
+						$variation_price[trim($prod['bun_id'])][$value['variation_id']]['price'] = $value['display_regular_price'];
 					}
 				}
 			}
@@ -200,11 +200,11 @@ if (!empty($package_product_ids)) {
 
 			if ($prod['type'] == 'free' || $prod['type'] == 'off') { ?>
 
-				<div class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo ($p_id) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo ($prod['type']) ?>" data-bundle_id="<?php echo ($prod['bun_id']) ?>" data-coupon="<?= round($i_coupon, 0) ?>">
+				<div class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo trim($prod['bun_id']) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo trim($prod['type']) ?>" data-bundle_id="<?php echo trim($prod['bun_id']) ?>" data-coupon="<?= round($i_coupon, 0) ?>">
 				<?php
 			} else { ?>
 
-					<div class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo ($prod['bun_id']) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo ($prod['type']) ?>" data-bundle_id="<?php echo ($prod['bun_id']) ?>" data-coupon="<?= round($i_coupon, 0) ?>">
+					<div class="item-selection col-hover-focus bd_item_div bd_item_div_<?php echo trim($prod['bun_id']) ?> bd_c_package_option <?= (self::$package_default_id == $prod['bun_id']) ? 'bd_selected_default_opt' : '' ?>" data-type="<?php echo trim($prod['type']) ?>" data-bundle_id="<?php echo trim($prod['bun_id']) ?>" data-coupon="<?= round($i_coupon, 0) ?>">
 					<?php
 				} ?>
 					<!-- js input hidden data package -->
@@ -563,3 +563,53 @@ if (!empty($package_product_ids)) {
 
 			<?php
 		}
+
+		add_action('wp_footer', function () { ?>
+
+				<script>
+					$ = jQuery;
+
+					/**
+					 * Update bundle price on variation dropdown change
+					 */
+					$('.var_prod_attr').change(function(e) {
+
+						e.preventDefault();
+
+						var top_parent = $(this).parents('.bd_item_div');
+
+						var reg_price_total = 0;
+
+						var coupon = $(this).parents('.bd_item_div').data('coupon');
+
+						var bundle_id = $(this).parents('.bd_item_div').data('bundle_id');
+
+						var prod_qty = top_parent.find('.var_prod_attr').length;
+
+						top_parent.find('.var_prod_attr').each(function(ind, elem) {
+
+							var var_data = JSON.parse(atob($(this).data('variations')));
+							var this_val = $(this).val();
+
+							$.each(var_data, function(index, value) {
+								if (this_val === value.attributes.attribute_pa_size) {
+									reg_price_total += parseFloat(value.display_regular_price);
+								}
+							});
+						});
+
+						// calculate and format bundle and per item prices
+						var new_bundle_price = parseFloat((reg_price_total * ((100 - parseFloat(coupon)) / 100).toFixed(2)));
+						var per_item_price = parseFloat((new_bundle_price / prod_qty).toFixed(2));
+
+						// get currency symbol
+						var curr_sym = $('.woocommerce-Price-currencySymbol:first').text();
+
+						// update above prices in DOM
+						$('.bd_item_div_' + bundle_id).find('.pi-price-each > span > span > bdi').empty().append(curr_sym + per_item_price.toFixed(2));
+						$('.bd_item_div_' + bundle_id).find('.pi-price-total > span > span > bdi').empty().append(curr_sym + new_bundle_price.toFixed(2));
+
+					});
+				</script>
+
+			<?php });

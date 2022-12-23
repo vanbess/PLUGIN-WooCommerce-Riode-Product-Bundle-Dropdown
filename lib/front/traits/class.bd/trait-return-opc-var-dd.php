@@ -120,7 +120,7 @@ if (!trait_exists('Return_OPC_Variations_Dropdown')) :
 
                 // load select option
                 if ('dropdown' === $type) {
-                    $html .= '<select id="' . $id . '" class="' . $class . '" name="" data-attribute_name="attribute_' . $attribute_name . '" ' . (($_hidden) ? 'style="display:none"' : '') . '>';
+                    $html .= '<select data-variations="'.base64_encode(json_encode($product->get_available_variations())).'" id="' . $id . '" class="' . $class . '" name="" data-attribute_name="attribute_' . $attribute_name . '" ' . (($_hidden) ? 'style="display:none"' : '') . '>';
                     $options = wc_get_product_terms($product_id, $attribute_name);
                     foreach ($options as $key => $option) {
                         $html .= '<option value="' . $option->slug . '" ' . (($default_option == $option->slug) ? 'selected' : '') . '>' . apply_filters('woocommerce_variation_option_name', $option->name) . '</option>';

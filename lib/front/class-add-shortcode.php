@@ -482,17 +482,23 @@ if (!class_exists('BDShortCode')) {
          */
         public static function bundle_dropdown_shortcode_style_A() {
 
-            $suffix      = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-            $assets_path = str_replace(array('http:', 'https:'), '', WC()->plugin_url()) . '/assets/';
-
-            wp_enqueue_script('wc-checkout', $assets_path . 'js/frontend/checkout' . $suffix . '.js', array('jquery', 'woocommerce', 'wc-country-select', 'wc-address-i18n'), WC_VERSION, true);
-            wp_enqueue_script('bundle_dropdown_js', BD_PLUGIN_URL . 'resources/js/bundle_dropdown.js', array(), time(), true);
-    
-            ob_start();
-            require_once BD_PLUGIN_DIR . 'view/bundle_dropdown_view.php';
-            $content = ob_get_clean();
-    
-            return $content;
+            if(is_product()):
+                
+                $suffix      = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+                $assets_path = str_replace(array('http:', 'https:'), '', WC()->plugin_url()) . '/assets/';
+                
+                wp_enqueue_script('wc-checkout', $assets_path . 'js/frontend/checkout' . $suffix . '.js', array('jquery', 'woocommerce', 'wc-country-select', 'wc-address-i18n'), WC_VERSION, true);
+                wp_enqueue_script('bundle_dropdown_js', BD_PLUGIN_URL . 'resources/js/bundle_dropdown.js', array(), time(), true);
+                wp_enqueue_style('bundle_dropdown_A', BD_PLUGIN_URL . 'resources/style/front_style.css', array(), BDVersion . time(), 'all');
+                
+                
+                ob_start();
+                require_once BD_PLUGIN_DIR . 'view/bundle_dropdown_view.php';
+                $content = ob_get_clean();
+                
+                return $content;
+                
+            endif;
         }
 
         /**
@@ -502,19 +508,23 @@ if (!class_exists('BDShortCode')) {
          */
         public static function bundle_dropdown_shortcode_style_B() {
 
-            $suffix      = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-            $assets_path = str_replace(array('http:', 'https:'), '', WC()->plugin_url()) . '/assets/';
+            if (is_product()) :
 
-            wp_enqueue_script('wc-checkout', $assets_path . 'js/frontend/checkout' . $suffix . '.js', array('jquery', 'woocommerce', 'wc-country-select', 'wc-address-i18n'), WC_VERSION, true);
-            wp_enqueue_style('bundle_dropdown_B', BD_PLUGIN_URL . 'resources/style/shortcode_style_B/front_style_B.css', array(), time(), 'all');
-            wp_enqueue_script('bundle_dropdown_B', BD_PLUGIN_URL . 'resources/js/shortcode_style_B/bundle_dropdown_B.js', array(), time(), true);
-            wp_enqueue_script('bundle_dropdown_js', BD_PLUGIN_URL . 'resources/js/bundle_dropdown.js', array(), time(), true);
+                $suffix      = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+                $assets_path = str_replace(array('http:', 'https:'), '', WC()->plugin_url()) . '/assets/';
 
-            ob_start();
-            require_once BD_PLUGIN_DIR . 'view/shortcode_style_B/bundle_dropdown_view_style_B.php';
-            $content = ob_get_clean();
+                wp_enqueue_script('wc-checkout', $assets_path . 'js/frontend/checkout' . $suffix . '.js', array('jquery', 'woocommerce', 'wc-country-select', 'wc-address-i18n'), WC_VERSION, true);
+                wp_enqueue_style('bundle_dropdown_B', BD_PLUGIN_URL . 'resources/style/shortcode_style_B/front_style_B.css', array(), time(), 'all');
+                wp_enqueue_script('bundle_dropdown_B', BD_PLUGIN_URL . 'resources/js/shortcode_style_B/bundle_dropdown_B.js', array(), time(), true);
+                wp_enqueue_script('bundle_dropdown_js', BD_PLUGIN_URL . 'resources/js/bundle_dropdown.js', array(), time(), true);
 
-            return $content;
+                ob_start();
+                require_once BD_PLUGIN_DIR . 'view/shortcode_style_B/bundle_dropdown_view_style_B.php';
+                $content = ob_get_clean();
+
+                return $content;
+
+            endif;
         }
     }
 

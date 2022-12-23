@@ -15,16 +15,33 @@ if (!trait_exists('Add_To_Cart_Multiple')) :
         public static function bd_add_to_cart_multiple() {
 
             // bail if not a valid request
-            if (!(isset($_REQUEST['action']) || 'bd_add_to_cart_multiple' != $_POST['action'])){
+            if (!(isset($_REQUEST['action']) || 'bd_add_to_cart_multiple' != $_POST['action'])) {
                 return;
             }
+
+            // add main prod to cart (Buy Now)
+            if (!is_string($_POST['main_prod'])) :
+
+                $main_prod = $_POST['main_prod'];
+
+                // add variable prod to cart
+                if (isset($main_prod['var_id'])) :
+                    WC()->cart->add_to_cart((int)$main_prod['prod_id'], (int)$main_prod['qty'], (int)$main_prod['var_id']);
+                endif;
+
+                // add simple prod to cart
+                if (!isset($main_prod['var_id'])) :
+                    WC()->cart->add_to_cart((int)$main_prod['prod_id'], (int)$main_prod['qty']);
+                endif;
+
+            endif;
 
             // setup default return data array
             $return = array(
                 'status' => false,
                 'html'   => '<h3> There is no any Product request!!! </h3>'
             );
-            
+
             // retrieve subbed products
             $bd_products = $_POST['add_to_cart_items_data']['products'];
 
@@ -60,7 +77,7 @@ if (!trait_exists('Add_To_Cart_Multiple')) :
          */
         private static function bd_add_to_cart($bd_products, $bd_bundle_var_data) {
 
-            foreach ($bd_products as $product_data):
+            foreach ($bd_products as $product_data) :
 
                 $product_id      = $product_data['product_id'];
                 $variation_id    = $product_data['variation_id'];
@@ -69,7 +86,7 @@ if (!trait_exists('Add_To_Cart_Multiple')) :
 
                 if ($c_product->is_type('variable')) {
 
-                    if (empty($variations_vals)){
+                    if (empty($variations_vals)) {
                         $variations_vals = array();
                     }
 
@@ -80,6 +97,7 @@ if (!trait_exists('Add_To_Cart_Multiple')) :
                     }
 
                     $variations = $product->get_available_variations();
+
                     foreach ($variations as $variation) {
                         if (!array_diff($variations_vals, $variation['attributes'])) {
                             $variation_id = $variation['variation_id'];
@@ -108,6 +126,7 @@ if (!trait_exists('Add_To_Cart_Multiple')) :
                         $p_links_attrs = array_merge($variations_vals, $product_data['linked_product']['attributes']);
 
                         $linked_var_id = self::bd_find_matching_product_variation_id($product_data['linked_product']['id'], $p_links_attrs);
+
                         if ($linked_var_id) {
                             $product_id = $product_data['linked_product']['id'];
                             $variation_id = $linked_var_id;
